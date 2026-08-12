@@ -106,17 +106,57 @@ class UserService {
     }
 
     /**
-     * Stub for fetching user preferences.
+     * Retrieves preferences of the user.
+     * @param {string} userId 
+     * @returns {Promise<Array<string>>}
      */
     async getPreferences(userId) {
-        throw new Error('Method not implemented.');
+        if (!userId) {
+            const error = new Error('User ID is required.');
+            error.statusCode = 400;
+            throw error;
+        }
+
+        const user = UserModel.findById(userId);
+        if (!user) {
+            const error = new Error('User not found.');
+            error.statusCode = 404;
+            throw error;
+        }
+
+        return user.preferences;
     }
 
     /**
-     * Stub for updating user preferences.
+     * Updates preferences of the user.
+     * @param {string} userId 
+     * @param {Array<string>} preferences 
+     * @returns {Promise<Array<string>>}
      */
     async updatePreferences(userId, preferences) {
-        throw new Error('Method not implemented.');
+        if (!userId) {
+            const error = new Error('User ID is required.');
+            error.statusCode = 400;
+            throw error;
+        }
+
+        // Validate preferences is an array
+        if (!Array.isArray(preferences)) {
+            const error = new Error('Preferences must be an array.');
+            error.statusCode = 400;
+            throw error;
+        }
+
+        const user = UserModel.findById(userId);
+        if (!user) {
+            const error = new Error('User not found.');
+            error.statusCode = 404;
+            throw error;
+        }
+
+        // Update user preferences in place
+        user.preferences = preferences;
+        return user.preferences;
     }
 }
 

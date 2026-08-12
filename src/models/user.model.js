@@ -26,6 +26,16 @@ class UserModel {
     }
 
     /**
+     * Find a user by their unique ID.
+     * @param {string} id 
+     * @returns {UserModel|undefined}
+     */
+    static findById(id) {
+        if (!id) return undefined;
+        return users.find(u => u.id === id);
+    }
+
+    /**
      * Store the user in our in-memory simulated database.
      * @param {UserModel} user 
      * @returns {UserModel}

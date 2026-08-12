@@ -39,27 +39,28 @@ const login = async (req, res, next) => {
 };
 
 /**
- * Handle GET /users/preferences (Stub)
+ * Handle GET /users/preferences
  */
-const getPreferences = (req, res, next) => {
-    return res.status(501).json({
-        error: {
-            message: 'Get user preferences is not implemented yet.',
-            status: 501
-        }
-    });
+const getPreferences = async (req, res, next) => {
+    try {
+        const preferences = await userService.getPreferences(req.user.id);
+        return res.status(200).json({ preferences });
+    } catch (err) {
+        next(err);
+    }
 };
 
 /**
- * Handle PUT /users/preferences (Stub)
+ * Handle PUT /users/preferences
  */
-const updatePreferences = (req, res, next) => {
-    return res.status(501).json({
-        error: {
-            message: 'Update user preferences is not implemented yet.',
-            status: 501
-        }
-    });
+const updatePreferences = async (req, res, next) => {
+    try {
+        const { preferences } = req.body || {};
+        const updatedPreferences = await userService.updatePreferences(req.user.id, preferences);
+        return res.status(200).json({ preferences: updatedPreferences });
+    } catch (err) {
+        next(err);
+    }
 };
 
 module.exports = {
