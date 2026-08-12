@@ -1,15 +1,21 @@
+const newsService = require('../services/news.service');
+
 /**
- * News controller (Stub).
- * Handles fetching news articles according to user preferences.
+ * News controller.
+ * Handles HTTP requests for fetching news.
  */
 
-const getNews = (req, res, next) => {
-    return res.status(501).json({
-        error: {
-            message: 'Get news is not implemented yet.',
-            status: 501
-        }
-    });
+/**
+ * Handle GET /news
+ */
+const getNews = async (req, res, next) => {
+    try {
+        const preferences = req.user.preferences || [];
+        const articles = await newsService.getNewsArticles(preferences);
+        return res.status(200).json({ news: articles });
+    } catch (err) {
+        next(err);
+    }
 };
 
 module.exports = {
